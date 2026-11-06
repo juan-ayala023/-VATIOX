@@ -1,0 +1,191 @@
+@import "tailwindcss";
+
+/* ───────────────────────── Tokens de marca VATIOX ───────────────────────── */
+:root {
+  --vx-red: #e30613;
+  --vx-carbon: #0f0e10;
+  --vx-bone: #f3f1ee;
+  --vx-silver: #c7cbd1;
+  --carbon-900: #0a090b;
+  --carbon-800: #17161a;
+  --carbon-700: #222026;
+  --ease-vx: cubic-bezier(0.22, 1, 0.36, 1);
+  --header-h: 96px;
+}
+
+@theme inline {
+  --color-vx-red: var(--vx-red);
+  --color-vx-carbon: var(--vx-carbon);
+  --color-vx-bone: var(--vx-bone);
+  --color-vx-silver: var(--vx-silver);
+  --color-carbon-900: var(--carbon-900);
+  --color-carbon-800: var(--carbon-800);
+  --color-carbon-700: var(--carbon-700);
+
+  --font-display: var(--font-barlow), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  --ease-vx: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-marquee: vx-marquee var(--marquee-duration, 30s) linear infinite;
+  --animate-speed: vx-speed 9s linear infinite;
+  --animate-wa-pulse: vx-wa-pulse 6s ease-out infinite;
+}
+
+@keyframes vx-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes vx-speed {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes vx-wa-pulse {
+  0% { transform: scale(1); opacity: 0.55; }
+  12% { transform: scale(1.7); opacity: 0; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+
+/* ───────────────────────── Base ───────────────────────── */
+html {
+  background: var(--vx-carbon);
+  color-scheme: dark;
+  scroll-padding-top: 80px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--vx-carbon);
+  color: var(--vx-bone);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--vx-red);
+  color: var(--vx-bone);
+}
+
+/* Foco visible: outline rojo en todo elemento interactivo */
+:focus-visible {
+  outline: 2px solid var(--vx-red);
+  outline-offset: 3px;
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: clip; }
+
+/* ───────────────────────── Utilidades de marca ───────────────────────── */
+@utility headline {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.015em;
+  line-height: 0.88;
+}
+
+/* Corte diagonal en botones y tarjetas */
+@utility clip-diag {
+  clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+}
+@utility clip-diag-sm {
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+@utility clip-slant {
+  clip-path: polygon(0 0, 100% 0, calc(100% - 18px) 100%, 0 100%);
+}
+
+/* Grilla técnica muy sutil (plata al 4%) */
+@utility tech-grid {
+  background-image:
+    linear-gradient(to right, rgb(199 203 209 / 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(199 203 209 / 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Texto de contorno */
+@utility text-stroke {
+  -webkit-text-stroke: 1.5px var(--vx-silver);
+  color: transparent;
+}
+@utility text-stroke-red {
+  -webkit-text-stroke: 1.5px var(--vx-red);
+  color: transparent;
+}
+
+/* Grano fino sobre el fondo (SVG noise, fijo, sin costo de animación) */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.grain-local {
+  position: relative;
+}
+.grain-local::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Scrollbar oculta para carruseles */
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Inputs (en capa components para que las utilidades de Tailwind puedan sobreescribir) */
+@layer components {
+.vx-input {
+  width: 100%;
+  min-height: 48px;
+  background: var(--carbon-800);
+  border: 1px solid rgb(199 203 209 / 0.18);
+  color: var(--vx-bone);
+  padding: 0.75rem 0.9rem;
+  font-size: 16px; /* evita zoom en iOS */
+  transition: border-color 0.2s var(--ease-vx);
+  border-radius: 0;
+}
+.vx-input::placeholder { color: rgb(199 203 209 / 0.45); }
+.vx-input:focus { outline: none; border-color: var(--vx-red); }
+.vx-input[aria-invalid="true"] { border-color: var(--vx-red); }
+select.vx-input { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--vx-silver) 50%), linear-gradient(135deg, var(--vx-silver) 50%, transparent 50%); background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 2.2rem; }
+}
+
+/* ───────────────────────── Movimiento reducido ───────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-marquee,
+  .animate-speed,
+  .animate-wa-pulse { animation: none !important; }
+}
+
+.speed-line {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 30%, black 70%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 30%, black 70%, transparent);
+}
